@@ -1,0 +1,6 @@
+name: RiseCore
+author: Travja
+version: 1.0
+description: RiseCore for Bungee
+main: me.travja.darkrise.core.bungee.BungeeCore
+api-version: 1.13

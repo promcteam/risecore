@@ -1,0 +1,8 @@
+name: RiseCore
+author: Travja
+version: 1.0
+description: The new and improved Core plugin for DarkRise
+main: me.travja.darkrise.core.Core
+api-version: 1.13
+softdepend:
+  - Vault
