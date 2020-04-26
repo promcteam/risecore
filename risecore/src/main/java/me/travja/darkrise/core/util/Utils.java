@@ -127,12 +127,12 @@ public final class Utils
         Material material = Material.getMaterial(mat);
         if (material == null)
         {
-            material = Material.getMaterial(mat, true);
-
-            if (material != null)
-            {
-                return material;
-            }
+//            material = Material.getMaterial(mat, true); // Used 1.13+ to attempt to match legacy materials.
+//
+//            if (material != null)
+//            {
+//                return material;
+//            }
 
             material = Material.matchMaterial(mat);
             if (material == null)

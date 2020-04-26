@@ -28,22 +28,42 @@ public class BoatListener implements Listener {
         }
     }
 
+    // 1.12 version for getting boat materials.
     private Material treeToMat(TreeSpecies type) {
         switch (type) {
             case ACACIA:
-                return Material.ACACIA_BOAT;
+                return Material.BOAT_ACACIA;
             case BIRCH:
-                return Material.BIRCH_BOAT;
+                return Material.BOAT_BIRCH;
             case DARK_OAK:
-                return Material.DARK_OAK_BOAT;
+                return Material.BOAT_DARK_OAK;
             case JUNGLE:
-                return Material.JUNGLE_BOAT;
+                return Material.BOAT_JUNGLE;
             case REDWOOD:
-                return Material.SPRUCE_BOAT;
+                return Material.BOAT_SPRUCE;
             default:
-                return Material.OAK_BOAT;
+                return Material.BOAT;
 
         }
     }
+
+// Used in 1.13 and higher to get tree material from Boat type
+//    private Material treeToMat(TreeSpecies type) {
+//        switch (type) {
+//            case ACACIA:
+//                return Material.ACACIA_BOAT;
+//            case BIRCH:
+//                return Material.BIRCH_BOAT;
+//            case DARK_OAK:
+//                return Material.DARK_OAK_BOAT;
+//            case JUNGLE:
+//                return Material.JUNGLE_BOAT;
+//            case REDWOOD:
+//                return Material.SPRUCE_BOAT;
+//            default:
+//                return Material.OAK_BOAT;
+//
+//        }
+//    }
 
 }

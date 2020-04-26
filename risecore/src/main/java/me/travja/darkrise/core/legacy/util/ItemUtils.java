@@ -44,11 +44,11 @@ public class ItemUtils {
     public static Material getMaterial(final String mat) {
         Material material = Material.getMaterial(mat);
         if (material == null) {
-            material = Material.getMaterial(mat, true);
-
-            if (material != null) {
-                return material;
-            }
+//            material = Material.getMaterial(mat, true); // Used in 1.13+
+//
+//            if (material != null) {
+//                return material;
+//            }
 
             material = Material.matchMaterial(mat);
             if (material == null) {

@@ -117,8 +117,8 @@ public final class Init {
         PLAYER.registerItem("expToLevel", HumanEntity::getExpToLevel);
         PLAYER.registerItem("money", player -> (int) Vault.getMoney(player));
 
-        ENCHANTMENT.registerItem("id", e -> e.getKey().getKey());
-        ENCHANTMENT.registerItem("name", e -> e.getKey().getKey());
+        ENCHANTMENT.registerItem("id", e -> e.getId()/*.getKey().getKey()*/); //getKey used in 1.13+
+        ENCHANTMENT.registerItem("name", e -> e.getName()/*.getKey().getKey()*/);
         ENCHANTMENT.registerItem("maxLevel", Enchantment::getMaxLevel);
         ENCHANTMENT.registerItem("startLevel", Enchantment::getStartLevel);
         ENCHANTMENT.registerItem("target", e -> e.getItemTarget().name().toLowerCase());
