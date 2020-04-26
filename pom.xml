@@ -18,8 +18,8 @@
         <rcp.version>1.0-SNAPSHOT</rcp.version>
         <!--Other version constants-->
         <rc.version>1.0-SNAPSHOT</rc.version>
-        <we.version>7.2.0-SNAPSHOT</we.version>
-        <wg.version>7.0.2-SNAPSHOT</wg.version>
+        <we.version>5.5.8-SNAPSHOT<!--7.2.0-SNAPSHOT--></we.version>
+        <wg.version>6.1.1-SNAPSHOT<!--7.0.2-SNAPSHOT--></wg.version>
         <spigot.version>1.15.2-R0.1-SNAPSHOT</spigot.version>
     </properties>
 
@@ -32,20 +32,27 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldedit</artifactId>
+            <version>${we.version}</version>
+            <scope>provided</scope>
+        </dependency>
+<!--        <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>
             <version>${we.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
-            <groupId>com.sk89q.worldguard</groupId>
-            <artifactId>worldguard-core</artifactId>
+            <groupId>com.sk89q<!--.worldguard--></groupId>
+            <artifactId>worldguard<!-- -core--></artifactId>
             <version>${wg.version}</version>
+            <scope>provided</scope>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
             <version>${wg.version}</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <build>

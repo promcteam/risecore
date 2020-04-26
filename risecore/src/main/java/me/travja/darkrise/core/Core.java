@@ -101,7 +101,7 @@ public class Core extends JavaPlugin {
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new JoinListener(), this);
         pm.registerEvents(new InteractListener(), this);
-        if(config.getBoolean("removeBoatOnExit"))
+        if (config.getBoolean("removeBoatOnExit"))
             pm.registerEvents(new BoatListener(), this);
 
     }
