@@ -19,8 +19,9 @@
         <!--Other version constants-->
         <rc.version>1.0-SNAPSHOT</rc.version>
         <we.version>5.5.8-SNAPSHOT<!--7.2.0-SNAPSHOT--></we.version>
-        <wg.version>6.1.1-SNAPSHOT<!--7.0.2-SNAPSHOT--></wg.version>
+        <wg.version><!--6.1.1-SNAPSHOT-->7.0.2-SNAPSHOT</wg.version>
         <spigot.version>1.15.2-R0.1-SNAPSHOT</spigot.version>
+        <bungee.version>1.15-SNAPSHOT</bungee.version>
     </properties>
 
     <repositories>
@@ -31,6 +32,18 @@
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>${spigot.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>${spigot.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldedit</artifactId>
@@ -43,8 +56,8 @@
             <version>${we.version}</version>
         </dependency>-->
         <dependency>
-            <groupId>com.sk89q<!--.worldguard--></groupId>
-            <artifactId>worldguard<!-- -core--></artifactId>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-bukkit</artifactId>
             <version>${wg.version}</version>
             <scope>provided</scope>
         </dependency>
