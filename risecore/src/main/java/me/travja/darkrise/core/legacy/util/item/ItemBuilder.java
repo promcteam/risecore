@@ -32,6 +32,9 @@ public class ItemBuilder implements ConfigurationSerializable {
     }
 
     @SuppressWarnings("unchecked")
+    /**
+     * @deprecated Items should be store using ItemMeta and loaded the same way. It is less likely to break that way.
+     */
     public ItemBuilder(final Map<String, Object> map) {
         final DeserializationWorker w = DeserializationWorker.start(map);
         Bukkit.getServer().getConsoleSender().sendMessage("Building item: " + w.getString("name", "none"));
