@@ -26,6 +26,7 @@ public class ItemBuilder implements ConfigurationSerializable {
     protected Map<Enchantment, Integer> enchants = new LinkedHashMap<>(3);
     protected DataBuilder dataBuilder = null;
     protected List<ItemFlag> flags = new ArrayList<>(5);
+    protected int modelData = -1;
     //  protected UnaryOperator<String> func;
 
     public ItemBuilder() {
@@ -52,6 +53,8 @@ public class ItemBuilder implements ConfigurationSerializable {
             }
         }
         this.dataBuilder = DataBuilder.build(w.getTypedObject("data", new HashMap<>(1)));
+
+        modelData = w.getInt("modelData", -1);
     }
 
     @Override
@@ -345,6 +348,10 @@ public class ItemBuilder implements ConfigurationSerializable {
         if (this.dataBuilder != null) {
             this.dataBuilder.apply(meta);
         }
+
+        if(this.modelData != -1)
+            meta.setCustomModelData(modelData);
+
         item.setItemMeta(meta);
         return item;
     }
@@ -391,6 +398,7 @@ public class ItemBuilder implements ConfigurationSerializable {
         }
         this.dataBuilder = null;
         this.unbreakable = false;
+        this.modelData = -1;
         return this;
     }
 
@@ -410,6 +418,8 @@ public class ItemBuilder implements ConfigurationSerializable {
         }
         b.append("enchants", enchant);
         b.append("data", (this.dataBuilder == null) ? null : this.dataBuilder.serialize());
+        if(modelData != -1)
+            b.append("modelData", modelData);
         return b.build();
     }
 
