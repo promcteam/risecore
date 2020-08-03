@@ -11,12 +11,13 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.math.DoubleRange;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-//@SerializableAs("DarkRiseItemI")
+@SerializableAs("DarkRiseItemImpl")
 public class DarkRiseItemImpl implements DarkRiseItem {
     private final String id;
 

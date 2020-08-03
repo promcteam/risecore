@@ -3,6 +3,7 @@ package me.travja.darkrise.core;
 import me.travja.darkrise.core.bungee.BungeeListener;
 import me.travja.darkrise.core.bungee.BungeeUtil;
 import me.travja.darkrise.core.config.CommandBlock;
+import me.travja.darkrise.core.item.DarkRiseItemImpl;
 import me.travja.darkrise.core.legacy.cmds.DelayedCommand;
 import me.travja.darkrise.core.legacy.util.Init;
 import me.travja.darkrise.core.legacy.util.Vault;
@@ -84,6 +85,9 @@ public class Core extends JavaPlugin {
     }
 
     private void register() {
+        ConfigurationSerialization.registerClass(DarkRiseItemImpl.class, "DarkRiseItemImpl");
+        ConfigurationSerialization.registerClass(DarkRiseItemImpl.DivineItemsMeta.class, "DarkRiseItemImpl_Divine");
+
         BUNGEE_ID = config.getString("bungee_id", "server");
         IS_BUNGEE = config.getBoolean("bungee", false);
         getServer().getMessenger().registerOutgoingPluginChannel(this, BungeeUtil.CHANNEL);

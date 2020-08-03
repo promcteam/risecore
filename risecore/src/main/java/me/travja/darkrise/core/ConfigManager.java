@@ -57,9 +57,11 @@ public class ConfigManager {
 
             if (copyMissing) {
                 YamlConfiguration def = new YamlConfiguration();
-                def.load(new InputStreamReader(defaultFile));
-                conf.addDefaults(def.getConfigurationSection("").getValues(true));
-                conf.options().copyDefaults(true);
+                if (defaultFile != null) {
+                    def.load(new InputStreamReader(defaultFile));
+                    conf.addDefaults(def.getConfigurationSection("").getValues(true));
+                    conf.options().copyDefaults(true);
+                }
                 conf.save(file);
             }
         } catch (IOException | InvalidConfigurationException e) {

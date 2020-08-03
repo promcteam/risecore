@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static net.md_5.bungee.api.ChatColor.*;
+
 public final class ComponentUtils {
     private ComponentUtils() {
     }
@@ -86,27 +88,21 @@ public final class ComponentUtils {
                         builder = new StringBuilder();
                     }
 
-                    switch (pos) {
-                        case BOLD:
-                            builderComponent.setBold(Boolean.TRUE);
-                            break;
-                        case ITALIC:
-                            builderComponent.setItalic(Boolean.TRUE);
-                            break;
-                        case UNDERLINE:
-                            builderComponent.setUnderlined(Boolean.TRUE);
-                            break;
-                        case STRIKETHROUGH:
-                            builderComponent.setStrikethrough(Boolean.TRUE);
-                            break;
-                        case MAGIC:
-                            builderComponent.setObfuscated(Boolean.TRUE);
-                            break;
-                        case RESET:
-                            pos = ChatColor.WHITE;
-                        default:
-                            builderComponent = new TextComponent("");
-                            builderComponent.setColor(pos);
+                    if (pos.equals(BOLD))
+                        builderComponent.setBold(Boolean.TRUE);
+                    else if (pos.equals(ITALIC))
+                        builderComponent.setItalic(Boolean.TRUE);
+                    else if (pos.equals(UNDERLINE))
+                        builderComponent.setUnderlined(Boolean.TRUE);
+                    else if (pos.equals(STRIKETHROUGH))
+                        builderComponent.setStrikethrough(Boolean.TRUE);
+                    else if (pos.equals(MAGIC))
+                        builderComponent.setObfuscated(Boolean.TRUE);
+                    else if (pos.equals(RESET))
+                        pos = ChatColor.WHITE;
+                    else {
+                        builderComponent = new TextComponent("");
+                        builderComponent.setColor(pos);
                     }
                 }
             } else {
@@ -260,13 +256,13 @@ public final class ComponentUtils {
             builder.append(this_.getColor());
         }
         if (this_.isBold()) {
-            builder.append(ChatColor.BOLD);
+            builder.append(BOLD);
         }
         if (this_.isItalic()) {
-            builder.append(ChatColor.ITALIC);
+            builder.append(ITALIC);
         }
         if (this_.isUnderlined()) {
-            builder.append(ChatColor.UNDERLINE);
+            builder.append(UNDERLINE);
         }
         if (this_.isStrikethrough()) {
             builder.append(ChatColor.STRIKETHROUGH);
