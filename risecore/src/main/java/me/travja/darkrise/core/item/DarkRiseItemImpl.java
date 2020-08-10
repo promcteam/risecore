@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -141,6 +142,11 @@ public class DarkRiseItemImpl implements DarkRiseItem {
     public DarkRiseItemImpl(String id, ItemStack item, boolean dropOnDeath, int removeOnDeath, boolean confirmOnUse, int removeOnUse, boolean canDrop, boolean enabledEnchantedDurability, DoubleRange chanceToLostDurability, List<DelayedCommand> commands, int modelData) {
         this.id = id;
         this.item = item.clone();
+        if(modelData != -1) {
+            ItemMeta im = this.item.getItemMeta();
+            im.setCustomModelData(modelData);
+            this.item.setItemMeta(im);
+        }
         this.dropOnDeath = dropOnDeath;
         this.removeOnDeath = removeOnDeath;
         this.confirmOnUse = confirmOnUse;

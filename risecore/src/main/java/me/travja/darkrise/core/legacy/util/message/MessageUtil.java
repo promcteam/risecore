@@ -10,6 +10,7 @@ import me.travja.darkrise.core.legacy.util.ItemUtils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -277,6 +278,10 @@ public class MessageUtil {
     }
 
     public static String getMessageAsString(String path, final String def, MessageData... data) {
+        return getMessageAsString(path, def, false, data);
+    }
+
+    public static String getMessageAsString(String path, final String def, boolean stripColor, MessageData... data) {
         if (!messages.containsKey(path))
             path = def;
         BaseComponent[] strs = getMessageAsComponent(path, data);
@@ -287,7 +292,7 @@ public class MessageUtil {
             bob.append(str.toLegacyText());
         }
 
-        return bob.toString();
+        return stripColor ? ChatColor.stripColor(bob.toString()) : bob.toString();
     }
 
 
@@ -322,6 +327,6 @@ public class MessageUtil {
         if (!Core.IS_BUNGEE)
             broadcastMessage(key, data);
         else
-            BungeeUtil.broadcastMessage(getMessageAsString(key, key, data));
+            BungeeUtil.broadcastMessage(getMessageAsString(key, key, false, data));
     }
 }

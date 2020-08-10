@@ -23,11 +23,11 @@ public class ItemUtils {
 
         ItemMeta im = item.getItemMeta();
         if (im.hasDisplayName()) {
-            im.setDisplayName(MessageUtil.getMessageAsString(im.getDisplayName(), im.getDisplayName(), replace));
+            im.setDisplayName(MessageUtil.getMessageAsString(im.getDisplayName(), im.getDisplayName(), false, replace));
         }
 
         if (im.getLore() != null && !im.getLore().isEmpty()) {
-            ArrayList<String> newLore = im.getLore().stream().map(lore -> MessageUtil.getMessageAsString(lore, lore, replace)).collect(Collectors.toCollection(ArrayList::new));
+            ArrayList<String> newLore = im.getLore().stream().map(lore -> MessageUtil.getMessageAsString(lore, lore, false, replace)).collect(Collectors.toCollection(ArrayList::new));
             im.setLore(newLore);
         }
 
