@@ -1,5 +1,6 @@
 package me.travja.darkrise.core.listeners;
 
+import me.travja.darkrise.core.Core;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.entity.Boat;
@@ -14,6 +15,9 @@ public class BoatListener implements Listener {
 
     @EventHandler
     public void exit(VehicleExitEvent event) {
+        if (!Core.getInstance().getConfig().getBoolean("removeBoatOnExit"))
+            return;
+
         if (event.getVehicle().getType() == EntityType.BOAT) {
 
             if (!(event.getExited() instanceof Player))
@@ -47,7 +51,7 @@ public class BoatListener implements Listener {
         }
     }*/
 
-// Used in 1.13 and higher to get tree material from Boat type
+    // Used in 1.13 and higher to get tree material from Boat type
     private Material treeToMat(TreeSpecies type) {
         switch (type) {
             case ACACIA:
