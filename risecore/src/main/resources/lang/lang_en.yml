@@ -13,3 +13,10 @@ core:
       You typed: &7$<text>&r
        Valid syntax:
          &8/&7darkrise &rreload
+    unstuck:
+      warmup: "&4Teleporting... &ePlease wait $<time>s to be teleported. &4Don't move."
+      teleported: "&aYou've been teleported!"
+      err:
+        cooldown: "&cYou are still on cooldown for $<time>s"
+        warmingUp: "&cPlease wait to be teleported."
+        cancelled: "&cTeleport cancelled."

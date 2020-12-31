@@ -23,6 +23,11 @@ onInteract:
         as: CONSOLE
         cmd: give {player} cookie 1
 
+debug: false
 removeBoatOnExit: true
 bungee: true
 bungee_id: server
+
+unstuck:
+  cooldown: 30
+  warmup: 5

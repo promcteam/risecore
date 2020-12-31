@@ -18,12 +18,14 @@ import java.util.logging.Logger;
 
 public class RisePlugin extends JavaPlugin {
 
-    public static Logger log;
-    public static RisePlugin inst;
+    public Logger log;
 
     {
-        inst = this;
         log = this.getLogger();
+    }
+
+    public void info(String msg) {
+        log.info(msg);
     }
 
     public void error(String msg) {
@@ -31,13 +33,13 @@ public class RisePlugin extends JavaPlugin {
     }
 
     public BukkitTask runSync(Runnable run) {
-        return Bukkit.getScheduler().runTask(inst, run);
+        return Bukkit.getScheduler().runTask(this, run);
     }
 
-    public BukkitTask runTaskLater(int delay, Runnable run) {
+    public BukkitTask runTaskLater(double delay, Runnable run) {
         if (delay == 0)
             return runSync(run);
-        return Bukkit.getScheduler().runTaskLater(inst, run, delay * 20L);
+        return Bukkit.getScheduler().runTaskLater(this, run, ((long) delay * 20L));
     }
 
     public BukkitTask runTaskAsynchronously(Runnable run) {
@@ -61,9 +63,9 @@ public class RisePlugin extends JavaPlugin {
     }
 
     public FileConfiguration getLang() {
-        File lang = new File(getDataFolder(), "lang_en.yml");
+        File lang = new File(getDataFolder() + File.separator + "lang", "lang_en.yml");
         if (!lang.exists()) {
-            InputStream in = getResource("lang_en.yml");
+            InputStream in = getResource("lang/lang_en.yml");
             if (in == null)
                 return null;
 

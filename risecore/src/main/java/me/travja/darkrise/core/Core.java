@@ -3,6 +3,7 @@ package me.travja.darkrise.core;
 import me.travja.darkrise.core.bungee.BungeeListener;
 import me.travja.darkrise.core.bungee.BungeeUtil;
 import me.travja.darkrise.core.command.ReloadCommand;
+import me.travja.darkrise.core.command.UnstuckCommand;
 import me.travja.darkrise.core.config.CommandBlock;
 import me.travja.darkrise.core.item.DarkRiseItemImpl;
 import me.travja.darkrise.core.legacy.cmds.DelayedCommand;
@@ -29,8 +30,8 @@ import java.util.logging.Logger;
 public class Core extends JavaPlugin {
 
     private static Core instance;
-    private static Logger log;
-    private FileConfiguration config;
+    public static Logger log;
+    public static FileConfiguration config;
 
     public static boolean IS_BUNGEE = false;
     public static String BUNGEE_ID = "server";
@@ -51,6 +52,7 @@ public class Core extends JavaPlugin {
 
         ConfigurationSerialization.registerClass(ItemBuilder.class);
         config = ConfigManager.loadConfigFile(new File(getDataFolder(), "config.yml"), getResource("config.yml"));
+        Debugger.setDebug(config.getBoolean("debug", false));
         register();
         Vault.init();
         Init.load();
@@ -85,7 +87,9 @@ public class Core extends JavaPlugin {
     }
 
     private void register() {
+        UnstuckCommand unstuck = new UnstuckCommand();
         getCommand("corereload").setExecutor(new ReloadCommand());
+        getCommand("stuck").setExecutor(unstuck);
         ConfigurationSerialization.registerClass(DarkRiseItemImpl.class, "DarkRiseItemImpl");
         ConfigurationSerialization.registerClass(DarkRiseItemImpl.DivineItemsMeta.class, "DarkRiseItemImpl_Divine");
 
@@ -99,6 +103,7 @@ public class Core extends JavaPlugin {
         pm.registerEvents(new JoinListener(), this);
         pm.registerEvents(new InteractListener(), this);
         pm.registerEvents(new BoatListener(), this);
+        pm.registerEvents(unstuck, this);
 
     }
 

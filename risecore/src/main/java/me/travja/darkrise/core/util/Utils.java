@@ -410,4 +410,18 @@ public final class Utils
         return bob.toString();
     }
 
+    public static String locToString(Location loc, boolean direction) {
+        StringBuilder builder = new StringBuilder(loc.getWorld().getName());
+        builder.append(",").append(loc.getX())
+                .append(",").append(loc.getY())
+                .append(",").append(loc.getZ())
+                .append(",").append(loc.getPitch())
+                .append(",").append(loc.getYaw());
+        return builder.toString();
+    }
+
+    public static String locToString(Location loc) {
+        return locToString(loc, true);
+    }
+
 }

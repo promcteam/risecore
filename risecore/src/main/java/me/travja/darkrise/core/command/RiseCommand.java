@@ -124,6 +124,8 @@ public abstract class RiseCommand implements CommandExecutor, TabCompleter {
 
     public void setDescription(String description) {
         this.description = description;
+        if (getBukkitCommand() != null)
+            getBukkitCommand().setDescription(description);
     }
 
     public String getUsage() {
@@ -132,6 +134,8 @@ public abstract class RiseCommand implements CommandExecutor, TabCompleter {
 
     public void setUsage(String usage) {
         this.usage = usage;
+        if (getBukkitCommand() != null)
+            getBukkitCommand().setUsage(usage);
     }
 
     public void sendUsage(String usage, CommandSender sender, RiseCommand command, String[] args) {

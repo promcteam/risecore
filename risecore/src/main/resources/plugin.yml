@@ -10,3 +10,6 @@ commands:
   corereload:
     description: Reloads RiseCore
     default: op
+  stuck:
+    description: Find yourself in a pickle? Use /<command> to get out.
+    default: true
