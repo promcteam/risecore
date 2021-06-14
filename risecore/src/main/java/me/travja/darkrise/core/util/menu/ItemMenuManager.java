@@ -28,7 +28,7 @@ public class ItemMenuManager implements Listener {
     }
 
     public static ItemMenu create(int size, String title, boolean destroyOnExit) {
-        ItemMenu menu = new ItemMenu(size, title)
+        ItemMenu menu = new ItemMenu(null, size, title)
                 .destroyOnExit(destroyOnExit);
         menus.add(menu);
         return menu;
