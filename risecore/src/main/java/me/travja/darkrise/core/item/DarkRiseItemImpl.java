@@ -87,7 +87,7 @@ public class DarkRiseItemImpl implements DarkRiseItem {
         else
             this.item = w.getTypedObject("item", ItemBuilder.class).build();
         this.dropOnDeath = w.getBoolean("dropOnDeath", true);
-        this.removeOnDeath = w.getInt("removeOnDeath", 0);
+        this.removeOnDeath = w.getInt("removeOnDeath", 1);
         this.confirmOnUse = w.getBoolean("confirmOnUse", false);
         this.removeOnUse = w.getInt("removeOnUse", 0);
         this.canDrop = w.getBoolean("canDrop", true);
@@ -122,7 +122,7 @@ public class DarkRiseItemImpl implements DarkRiseItem {
         this.id = id.intern();
         this.item = item;
         this.dropOnDeath = true;
-        this.removeOnDeath = 0;
+        this.removeOnDeath = 1;
         this.confirmOnUse = false;
         this.removeOnUse = 0;
         this.canDrop = true;

@@ -1,12 +1,16 @@
 package me.travja.darkrise.core.util.patterns;
 
+import me.travja.darkrise.core.Core;
 import me.travja.darkrise.core.legacy.cmds.DelayedCommand;
 import me.travja.darkrise.core.legacy.util.DeserializationWorker;
 import me.travja.darkrise.core.legacy.util.SerializationBuilder;
 import me.travja.darkrise.core.legacy.util.item.ItemBuilder;
+import me.travja.darkrise.core.util.menu.ItemMenu;
+import me.travja.darkrise.core.util.menu.MenuAction;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.AbstractMap.SimpleEntry;
@@ -70,6 +74,64 @@ public class InventoryPattern implements ConfigurationSerializable {
         if (slot / 9 >= pattern.length)
             return ' ';
         return pattern[slot / 9].charAt(slot % 9);
+    }
+
+    public void apply(Inventory inv) {
+        for (int i = 0; i < inv.getSize(); i++) {
+            Character c = getSlot(i);
+            ItemStack item = getItems().get(c);
+            inv.setItem(i, item);
+        }
+    }
+
+    public void apply(ItemMenu menu) {
+        for (int i = 0; i < menu.getSize(); i++) {
+            Character c = getSlot(i);
+            ItemStack item = getItems().get(c);
+
+            Collection<DelayedCommand> cmd = getCommands(c);
+            MenuAction action = (player) -> {
+                if (cmd != null && !cmd.isEmpty()) {
+                    DelayedCommand.invoke(Core.getInstance(), player, cmd);
+                }
+                if (closeOnClickSlots.contains(c))
+                    player.closeInventory();
+            };
+            menu.setItem(i, item, action);
+        }
+    }
+
+    /**
+     * Determine if the {@link InventoryPattern} contains the given character
+     *
+     * @param c - The character to find
+     * @return boolean
+     */
+    public boolean contains(char c) {
+        return !find(c).isEmpty();
+    }
+
+    /**
+     * Attempts to find all indexes of char c in the pattern.
+     * Returns a list of Integers possibly ranging from 0 to rows * 9
+     *
+     * @param c - The character to search for
+     * @return {@link List List&lt;Integer&gt;}
+     */
+    public List<Integer> find(char c) {
+        List<Integer> indexes = new ArrayList<>();
+        for (int i = 0; i < getPattern().length; i++) {
+            String line = getPattern()[i];
+            if (!line.contains(String.valueOf(c))) continue;
+
+            for (int k = 0; k < line.length(); k++) {
+                if (line.charAt(k) == c) {
+                    indexes.add(i * 9 + k);
+                }
+            }
+        }
+
+        return indexes;
     }
 
     @Override
