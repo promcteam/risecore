@@ -50,35 +50,6 @@ public class DarkRiseItemImpl implements DarkRiseItem {
 //
 //    private final DivineItemsMeta divineItemsMeta;
 
-    public static class DivineItemsMeta implements ConfigurationSerializable {
-        public boolean enabled;
-
-        public String tierName;
-
-        public Double tierLevel;
-
-        public DivineItemsMeta(Map<String, Object> map) {
-            DeserializationWorker w = DeserializationWorker.start(map);
-            this.enabled = w.getBoolean("enabled", false);
-            this.tierName = w.getString("tierName");
-            this.tierLevel = Double.valueOf(w.getDouble("tierLevel"));
-        }
-
-        public DivineItemsMeta() {
-            this.enabled = false;
-            this.tierName = "";
-            this.tierLevel = Double.valueOf(0.0D);
-        }
-
-        public Map<String, Object> serialize() {
-            return SerializationBuilder.start(3)
-                    .append("enabled", Boolean.valueOf(this.enabled))
-                    .append("tierName", this.tierName)
-                    .append("tierLevel", this.tierLevel)
-                    .build();
-        }
-    }
-
     public DarkRiseItemImpl(Map<String, Object> map) {
         DeserializationWorker w = DeserializationWorker.start(map);
         this.id = w.getString("id").intern();
@@ -142,7 +113,7 @@ public class DarkRiseItemImpl implements DarkRiseItem {
     public DarkRiseItemImpl(String id, ItemStack item, boolean dropOnDeath, int removeOnDeath, boolean confirmOnUse, int removeOnUse, boolean canDrop, boolean enabledEnchantedDurability, DoubleRange chanceToLostDurability, List<DelayedCommand> commands, int modelData) {
         this.id = id;
         this.item = item.clone();
-        if(modelData != -1) {
+        if (modelData != -1) {
             ItemMeta im = this.item.getItemMeta();
             im.setCustomModelData(modelData);
             this.item.setItemMeta(im);
@@ -197,13 +168,13 @@ public class DarkRiseItemImpl implements DarkRiseItem {
         return this.enabledEnchantedDurability;
     }
 
-//    public boolean isTwoHand() {
-//        return this.twoHand;
-//    }
-
     public DoubleRange chanceToLostDurability() {
         return this.chanceToLostDurability;
     }
+
+//    public boolean isTwoHand() {
+//        return this.twoHand;
+//    }
 
     public List<DelayedCommand> getCommands() {
         return this.commands;
@@ -245,11 +216,29 @@ public class DarkRiseItemImpl implements DarkRiseItem {
         SerializationBuilder sb = SerializationBuilder.start(10).append("id", this.id).append("canDrop", Boolean.valueOf(this.canDrop))
                 .append("tradeable", Boolean.valueOf(this.tradeable)).append("enabledEnchantedDurability", Boolean.valueOf(this.enabledEnchantedDurability))
                 .append("chanceToLostDurability", this.chanceToLostDurability.getMinimumDouble() + "-" + this.chanceToLostDurability.getMaximumDouble())
-                .append("item", /*ItemBuilder.newItem(*/this.item/*)*/).append("dropOnDeath", Boolean.valueOf(this.dropOnDeath))
+                .append("dropOnDeath", Boolean.valueOf(this.dropOnDeath))
                 .append("removeOnDeath", Integer.valueOf(this.removeOnDeath)).append("confirmOnUse", Boolean.valueOf(this.confirmOnUse))
                 .append("removeOnUse", Integer.valueOf(this.removeOnUse))//.append("twoHand", Boolean.valueOf(this.twoHand))
                 .append("permission", SerializationBuilder.start(2).append("node", this.permissionList).append("message", this.permissionMessage))
                 .append("commands", this.commands.stream().map(DelayedCommand::serialize).collect(Collectors.toList()));
+
+        Map<String, Object> item = new HashMap<>(this.item.serialize());
+        item.put("==", "org.bukkit.inventory.ItemStack");
+        ItemMeta im = this.item.getItemMeta();
+        if (im != null) {
+            Map<String, Object> meta = new HashMap<>(im.serialize());
+            if (im.hasDisplayName())
+                meta.put("display-name", im.getDisplayName());
+            if (im.hasLore())
+                meta.put("lore", im.getLore());
+
+            meta.put("==", "ItemMeta");
+            item.put("meta", meta);
+        }
+
+
+        sb.append("item", /*ItemBuilder.newItem(*/this.item/*)*/);
+        sb.append("item", item);
 //        if (this.divineItemsMeta != null)
 //            sb.append("divineItemsMeta", this.divineItemsMeta);
         return sb.build();
@@ -284,5 +273,34 @@ public class DarkRiseItemImpl implements DarkRiseItem {
                 .append("commands", this.commands)
                 .append("name", getName())
                 .toString();
+    }
+
+    public static class DivineItemsMeta implements ConfigurationSerializable {
+        public boolean enabled;
+
+        public String tierName;
+
+        public Double tierLevel;
+
+        public DivineItemsMeta(Map<String, Object> map) {
+            DeserializationWorker w = DeserializationWorker.start(map);
+            this.enabled = w.getBoolean("enabled", false);
+            this.tierName = w.getString("tierName");
+            this.tierLevel = Double.valueOf(w.getDouble("tierLevel"));
+        }
+
+        public DivineItemsMeta() {
+            this.enabled = false;
+            this.tierName = "";
+            this.tierLevel = Double.valueOf(0.0D);
+        }
+
+        public Map<String, Object> serialize() {
+            return SerializationBuilder.start(3)
+                    .append("enabled", Boolean.valueOf(this.enabled))
+                    .append("tierName", this.tierName)
+                    .append("tierLevel", this.tierLevel)
+                    .build();
+        }
     }
 }
