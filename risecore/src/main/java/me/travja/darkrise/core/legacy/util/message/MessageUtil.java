@@ -62,8 +62,7 @@ public class MessageUtil {
         return temp;
     }
 
-    public static void sendMessage(String key, CommandSender player, MessageData... replace) {
-        BaseComponent[] comps = getMessageAsComponent(key, replace);
+    public static void sendMessage(CommandSender player, BaseComponent... comps) {
         ArrayList<BaseComponent> send = new ArrayList<>();
         for (BaseComponent component : comps) {
             if (component instanceof TextComponent && ((TextComponent) component).getText().equalsIgnoreCase("\n")) {
@@ -74,6 +73,11 @@ public class MessageUtil {
         }
         if (!send.isEmpty())
             player.spigot().sendMessage(send.toArray(new BaseComponent[0]));
+    }
+
+    public static void sendMessage(String key, CommandSender player, MessageData... replace) {
+        BaseComponent[] comps = getMessageAsComponent(key, replace);
+        sendMessage(player, comps);
 
 /*        for (String send : msgs) {
             if (send.equalsIgnoreCase("false"))
@@ -146,9 +150,9 @@ public class MessageUtil {
 
         ArrayList<BaseComponent> components = new ArrayList<>();
 
-        ArrayList<String> msgs = getString(path);
+        ArrayList<String>                        msgs         = getString(path);
         HashMap<String, PlaceholderItem<Object>> placeholders = new HashMap<>();
-        HashMap<String, MessageData> data = Arrays.stream(replace).collect(Collectors.toMap(MessageData::getName, messageData -> messageData, (a, b) -> b, HashMap::new));
+        HashMap<String, MessageData>             data         = Arrays.stream(replace).collect(Collectors.toMap(MessageData::getName, messageData -> messageData, (a, b) -> b, HashMap::new));
 
         Pattern pat = Pattern.compile("\\$<(.*?)>");
         msgs.stream().map(pat::matcher).forEach(mat -> {
@@ -169,7 +173,7 @@ public class MessageUtil {
             for (BaseComponent component : comps) {
                 for (Map.Entry<String, PlaceholderItem<Object>> entry : placeholders.entrySet()) {
                     PlaceholderItem<Object> holder = entry.getValue();
-                    String id = entry.getKey();
+                    String                  id     = entry.getKey();
                     if (!component.toPlainText().contains(id))
                         continue;
                     Object translated = holder.apply(data.get(holder.getType().getId()).getObject(), null);
