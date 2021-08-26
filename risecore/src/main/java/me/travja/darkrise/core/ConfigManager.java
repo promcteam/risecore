@@ -5,7 +5,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class ConfigManager {
 
@@ -32,20 +35,21 @@ public class ConfigManager {
      * @return The FileConfiguration parsed from the file.
      */
     public static FileConfiguration loadConfigFile(File file, InputStream defaultFile, boolean copyMissing) {
+        YamlConfiguration defConfig = new YamlConfiguration();
+        if (defaultFile != null) {
+            try {
+                defConfig.load(new InputStreamReader(defaultFile));
+            } catch (IOException | InvalidConfigurationException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         file.getParentFile().mkdirs();
         if (!file.exists()) {
             try {
                 file.createNewFile();
-                if (defaultFile != null) {
-                    FileOutputStream out = new FileOutputStream(file);
-                    int read;
-                    while ((read = defaultFile.read()) != -1) {
-                        out.write(read);
-                    }
-
-                    defaultFile.close();
-                    out.close();
-                }
+                defConfig.save(file);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -56,12 +60,8 @@ public class ConfigManager {
             conf.load(file);
 
             if (copyMissing) {
-                YamlConfiguration def = new YamlConfiguration();
-                if (defaultFile != null) {
-                    def.load(new InputStreamReader(defaultFile));
-                    conf.addDefaults(def.getConfigurationSection("").getValues(true));
-                    conf.options().copyDefaults(true);
-                }
+                conf.addDefaults(defConfig.getConfigurationSection("").getValues(true));
+                conf.options().copyDefaults(true);
                 conf.save(file);
             }
         } catch (IOException | InvalidConfigurationException e) {

@@ -5,31 +5,28 @@ import com.google.gson.GsonBuilder;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
+import net.md_5.bungee.api.chat.hover.content.Content;
 import net.md_5.bungee.chat.ComponentSerializer;
 import net.md_5.bungee.chat.TextComponentSerializer;
 import net.md_5.bungee.chat.TranslatableComponentSerializer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static net.md_5.bungee.api.ChatColor.*;
 
 public final class ComponentUtils {
+    private static final Gson gson = new GsonBuilder().registerTypeAdapter(BaseComponent.class, new ComponentSerializer()).registerTypeAdapter(TextComponent.class, new TextComponentSerializer()).registerTypeAdapter(TranslatableComponent.class, new TranslatableComponentSerializer()).create();
+    private static final Pattern url = Pattern.compile("^(?:(https?)://)?([-\\w_\\.]{2,}\\.[a-z]{2,4})(/\\S*)?$");
+    private static final Pattern format = Pattern.compile("%(?:(\\d+)\\$)?([A-Za-z%]|$)");
+
     private ComponentUtils() {
     }
-
-    private static final Gson gson = new GsonBuilder().registerTypeAdapter(BaseComponent.class, new ComponentSerializer()).registerTypeAdapter(TextComponent.class, new TextComponentSerializer()).registerTypeAdapter(TranslatableComponent.class, new TranslatableComponentSerializer()).create();
-
 
     public static BaseComponent[] parse(String json) {
         return json.startsWith("[") ? gson.fromJson(json, BaseComponent[].class) : new BaseComponent[]{gson.fromJson(json, BaseComponent.class)};
     }
-
-    private static final Pattern url = Pattern.compile("^(?:(https?)://)?([-\\w_\\.]{2,}\\.[a-z]{2,4})(/\\S*)?$");
 
     public static boolean isEmpty(BaseComponent component) {
         List<BaseComponent> extra = component.getExtra();
@@ -209,8 +206,6 @@ public final class ComponentUtils {
         }
 
     }
-
-    private static final Pattern format = Pattern.compile("%(?:(\\d+)\\$)?([A-Za-z%]|$)");
 
     static void toLegacyText(TranslatableComponent this_, StringBuilder builder) {
         String trans = this_.getTranslate();
@@ -573,7 +568,7 @@ public final class ComponentUtils {
     public static HoverEvent duplicate(HoverEvent this_) {
         BaseComponent[] value = this_.getValue();
         if (value == null) {
-            return new HoverEvent(this_.getAction(), null);
+            return new HoverEvent(this_.getAction(), Collections.EMPTY_LIST);
         }
         final BaseComponent[] valueCpy = new BaseComponent[value.length];
         for (int i = 0; i < value.length; i++) {

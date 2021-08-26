@@ -9,6 +9,7 @@ import me.travja.darkrise.core.legacy.util.item.ItemBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.math.DoubleRange;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
@@ -83,10 +84,22 @@ public class DarkRiseItemImpl implements DarkRiseItem {
         this.enabledEnchantedDurability = w.getBoolean("enabledEnchantedDurability", false);
         String[] rangeString = w.getString("chanceToLostDurability", "0.0 - 0.0").split("-");
         this.chanceToLostDurability = new DoubleRange(Double.parseDouble(rangeString[0].trim()), Double.parseDouble(rangeString[1].trim()));
+
         this.commands = ((List<Map<String, Object>>) map.get("commands"))
                 .stream()
                 .map(DelayedCommand::new)
                 .collect(Collectors.toList());
+
+        ItemMeta im = item.getItemMeta();
+        if (im.hasDisplayName())
+            im.setDisplayName(ChatColor.translateAlternateColorCodes('&', im.getDisplayName()));
+        if (im.hasLore()) {
+            List<String> lore = new ArrayList<>();
+            im.getLore().forEach(str -> lore.add(ChatColor.translateAlternateColorCodes('&', str)));
+            im.setLore(lore);
+        }
+
+        item.setItemMeta(im);
     }
 
     public DarkRiseItemImpl(String id, ItemStack item) {
