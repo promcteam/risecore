@@ -20,8 +20,8 @@
         <rc.version>1.0-SNAPSHOT</rc.version>
         <we.version>5.5.8-SNAPSHOT<!--7.2.0-SNAPSHOT--></we.version>
         <wg.version><!--6.1.1-SNAPSHOT-->7.0.2-SNAPSHOT</wg.version>
-        <spigot.version>1.17.1-R0.1-SNAPSHOT</spigot.version>
-        <bungee.version>1.17-R0.1-SNAPSHOT</bungee.version>
+        <spigot.version>1.18.1-R0.1-SNAPSHOT</spigot.version>
+        <bungee.version>1.18-R0.1-SNAPSHOT</bungee.version>
     </properties>
 
     <repositories>
