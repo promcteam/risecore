@@ -7,7 +7,6 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.hover.content.Text;
-import net.minecraft.nbt.NBTTagCompound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -34,7 +33,10 @@ public class NMSPlayerUtils {
                     ? Class.forName("net.minecraft.nbt.NBTTagCompound")
                     : ReflectionUtil.getNMSClass("NBTTagCompound");
             Object tagCompound;
-            if (ReflectionUtil.isVersionGreater(18))
+            if (ReflectionUtil.MINOR_VERSION >= 19)
+                //Save method in 1.19
+                tagCompound = cItem.getClass().getMethod("a", tagClass).invoke(cItem, tagClass.newInstance());
+            else if (ReflectionUtil.MINOR_VERSION == 18)
                 //Save method in 1.18
                 tagCompound = cItem.getClass().getMethod("b", tagClass).invoke(cItem, tagClass.newInstance());
             else
@@ -44,7 +46,8 @@ public class NMSPlayerUtils {
                     Action.SHOW_ITEM,
                     new ArrayList(Collections.singletonList(new Text(new BaseComponent[]{new TextComponent(tagCompound.toString())})))
             );
-        } catch (IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException | InstantiationException e) {
+        } catch (IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
+                 InstantiationException e) {
             e.printStackTrace();
         }
         return null;

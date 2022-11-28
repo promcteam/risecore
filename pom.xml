@@ -21,9 +21,13 @@
         <rc.version>1.0-SNAPSHOT</rc.version>
         <we.version>5.5.8-SNAPSHOT<!--7.2.0-SNAPSHOT--></we.version>
         <wg.version><!--6.1.1-SNAPSHOT-->7.0.2-SNAPSHOT</wg.version>
-        <spigot.version>1.18.1-R0.1-SNAPSHOT</spigot.version>
-        <bungee.version>1.18-R0.1-SNAPSHOT</bungee.version>
+        <spigot.version>1.19.2-R0.1-SNAPSHOT</spigot.version>
+        <bungee.version>1.19-R0.1-SNAPSHOT</bungee.version>
     </properties>
+
+    <modules>
+        <module>risecore</module>
+    </modules>
 
     <repositories>
         <repository>
@@ -86,13 +90,13 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>RELEASE</version>
+            <version>1.18.24</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>2.2.1</version>
+            <version>3.0.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

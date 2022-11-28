@@ -15,11 +15,9 @@ import java.util.stream.Collectors;
 public class ItemUtils {
 
     public static ItemStack replaceText(ItemStack item, MessageData... replace) {
-        if(item == null)
-            return item;
+        if (item == null) return item;
         item = item.clone();
-        if (!item.hasItemMeta())
-            item.setItemMeta(Bukkit.getItemFactory().getItemMeta(item.getType()));
+        if (!item.hasItemMeta()) item.setItemMeta(Bukkit.getItemFactory().getItemMeta(item.getType()));
 
         ItemMeta im = item.getItemMeta();
         if (im.hasDisplayName()) {
@@ -43,35 +41,34 @@ public class ItemUtils {
      */
     public static Material getMaterial(final String mat) {
         Material material = Material.getMaterial(mat);
-        if (material == null) {
+        if (material != null) return material;
 //            material = Material.getMaterial(mat, true); // Used in 1.13+
 //
 //            if (material != null) {
 //                return material;
 //            }
 
-            material = Material.matchMaterial(mat);
-            if (material == null) {
-                try {
-                    final int id = Integer.parseInt(mat);
-                    Bukkit.getLogger().severe("SpigotCore attempts to get a material by it's id. Please change it to a name. ID: " + mat);
-                    Thread.dumpStack();
-                    for (Material m : Material.class.getEnumConstants()) {
-                        if (m.getId() == id) {
-                            return m;
-                        }
-                    }
-                } catch (final Exception ignored) {
-                    return Material.AIR;
+        material = Material.matchMaterial(mat);
+        if (material != null) return material;
+
+        try {
+            final int id = Integer.parseInt(mat);
+            Bukkit.getLogger().severe("SpigotCore attempts to get a material by it's id. Please change it to a name. ID: " + mat);
+            Thread.dumpStack();
+            for (Material m : Material.class.getEnumConstants()) {
+                if (m.getId() == id) {
+                    return m;
                 }
             }
+        } catch (final Exception ignored) {
+            return Material.AIR;
         }
-        return material;
+
+        return null;
     }
 
     public static String removeColors(String str) {
-        if (str == null)
-            return null;
+        if (str == null) return null;
         return ChatColor.stripColor(str);
     }
 
@@ -82,8 +79,7 @@ public class ItemUtils {
      * @return New ArrayList of cleaned Strings
      */
     public static ArrayList<String> removeColors(List<String> strs) {
-        if (strs == null)
-            return null;
+        if (strs == null) return null;
 
         ArrayList<String> ret = strs.stream().map(ItemUtils::removeColors).collect(Collectors.toCollection(ArrayList::new));
         return ret;
@@ -96,9 +92,7 @@ public class ItemUtils {
      * @return new string
      */
     public static String fixColors(String msg) {
-        if (msg == null) {
-            return null;
-        }
+        if (msg == null) return null;
 
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
@@ -110,8 +104,7 @@ public class ItemUtils {
      * @return new List
      */
     public static ArrayList<String> fixColors(List<String> msg) {
-        if (msg == null)
-            return null;
+        if (msg == null) return null;
         ArrayList<String> ret = new ArrayList<>();
         for (String s : msg) {
             String fixColors = fixColors(s);
@@ -122,30 +115,24 @@ public class ItemUtils {
 
     public static ItemMeta getItemMeta(final ItemStack itemStack) {
         final ItemMeta meta = itemStack.getItemMeta();
-        if (meta == null) {
-            return Bukkit.getItemFactory().getItemMeta(itemStack.getType());
-        }
+        if (meta == null) return Bukkit.getItemFactory().getItemMeta(itemStack.getType());
         return meta;
     }
 
     public static FireworkEffect simpleDeserializeEffect(final Map<Object, Object> map) {
-        if (map == null) {
-            return null;
-        }
+        if (map == null) return null;
         final DeserializationWorker w = DeserializationWorker.startUnsafe(map);
 
-        final FireworkEffect.Type type = w.getEnum("type", FireworkEffect.Type.BALL);
-        final boolean trail = w.getBoolean("trail");
-        final boolean flicker = w.getBoolean("flicker");
-        final List<Color> colors = simpleDeserializeColors(w.getTypedObject("colors"));
-        final List<Color> fadeColors = simpleDeserializeColors(w.getTypedObject("fadeColors"));
+        final FireworkEffect.Type type       = w.getEnum("type", FireworkEffect.Type.BALL);
+        final boolean             trail      = w.getBoolean("trail");
+        final boolean             flicker    = w.getBoolean("flicker");
+        final List<Color>         colors     = simpleDeserializeColors(w.getTypedObject("colors"));
+        final List<Color>         fadeColors = simpleDeserializeColors(w.getTypedObject("fadeColors"));
         return FireworkEffect.builder().with(type).trail(trail).flicker(flicker).withColor(colors).withFade(fadeColors).build();
     }
 
     public static List<FireworkEffect> simpleDeserializeEffects(final Collection<Map<Object, Object>> list) {
-        if (list == null) {
-            return new ArrayList<>(1);
-        }
+        if (list == null) return new ArrayList<>(1);
         final List<FireworkEffect> result = new ArrayList<>(list.size());
         for (final Map<Object, Object> map : list) {
             result.add(simpleDeserializeEffect(map));
@@ -154,16 +141,12 @@ public class ItemUtils {
     }
 
     public static Color simpleDeserializeColor(final String string) {
-        if (string == null) {
-            return null;
-        }
+        if (string == null) return null;
         return Color.fromRGB(Integer.parseInt(string, 16));
     }
 
     public static List<Color> simpleDeserializeColors(final Collection<String> strings) {
-        if (strings == null) {
-            return new ArrayList<>(1);
-        }
+        if (strings == null) return new ArrayList<>(1);
         final List<Color> result = new ArrayList<>(strings.size());
         for (final String str : strings) {
             result.add(simpleDeserializeColor(str));
@@ -172,16 +155,12 @@ public class ItemUtils {
     }
 
     public static String simpleSerializeColor(final Color color) {
-        if (color == null) {
-            return null;
-        }
+        if (color == null) return null;
         return Integer.toString(color.asRGB(), 16);
     }
 
     public static List<String> simpleSerializeColors(final Collection<Color> colors) {
-        if (colors == null) {
-            return new ArrayList<>(1);
-        }
+        if (colors == null) return new ArrayList<>(1);
         final List<String> result = new ArrayList<>(colors.size());
         for (final Color color : colors) {
             result.add(simpleSerializeColor(color));
@@ -190,9 +169,7 @@ public class ItemUtils {
     }
 
     public static Map<String, Object> simpleSerializeEffect(final FireworkEffect effect) {
-        if (effect == null) {
-            return null;
-        }
+        if (effect == null) return null;
         final SerializationBuilder b = SerializationBuilder.start(5);
         b.append("type", effect.getType());
         b.append("trail", effect.hasTrail());
@@ -203,9 +180,7 @@ public class ItemUtils {
     }
 
     public static List<Map<String, Object>> simpleSerializeEffects(final Collection<FireworkEffect> effects) {
-        if (effects == null) {
-            return new ArrayList<>(1);
-        }
+        if (effects == null) return new ArrayList<>(1);
         final List<Map<String, Object>> result = new ArrayList<>(effects.size());
         for (final FireworkEffect effect : effects) {
             result.add(simpleSerializeEffect(effect));
@@ -223,7 +198,7 @@ public class ItemUtils {
      */
     public static ItemStack[] compact(final boolean respectStackSize, final ItemStack... itemsToCopact) {
         final ItemStack[] items = new ItemStack[itemsToCopact.length];
-        int j = 0;
+        int               j     = 0;
         for (final ItemStack itemStack : itemsToCopact) {
             items[j++] = (itemStack == null) ? null : itemStack.clone();
         }
