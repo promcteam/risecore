@@ -94,10 +94,13 @@ public class BungeeUtil {
     }
 
     private static void sendFirstQueue() {
-        if (queued.size() <= 0)
-            return;
+        if (queued.size() == 0) return;
 
         ByteArrayDataOutput out = queued.get(0);
+        if (out == null) {
+            queued.remove(0);
+            return;
+        }
         sendMessage(out);
 
         queued.remove(out);

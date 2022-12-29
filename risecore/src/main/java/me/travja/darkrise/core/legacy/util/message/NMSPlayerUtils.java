@@ -5,7 +5,9 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.HoverEvent.Action;
+import net.md_5.bungee.api.chat.ItemTag;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Item;
 import net.md_5.bungee.api.chat.hover.content.Text;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -29,25 +31,29 @@ public class NMSPlayerUtils {
             Class  cItemClass = ReflectionUtil.getBukkitClass("inventory.CraftItemStack");
             Method asNMSCopy  = cItemClass.getMethod("asNMSCopy", ItemStack.class);
             Object cItem      = asNMSCopy.invoke(cItemClass, itemStack);
-            Class tagClass = ReflectionUtil.isNewVersion()
-                    ? Class.forName("net.minecraft.nbt.NBTTagCompound")
-                    : ReflectionUtil.getNMSClass("NBTTagCompound");
             Object tagCompound;
             if (ReflectionUtil.MINOR_VERSION >= 19)
-                //Save method in 1.19
-                tagCompound = cItem.getClass().getMethod("a", tagClass).invoke(cItem, tagClass.newInstance());
-            else if (ReflectionUtil.MINOR_VERSION == 18)
+                tagCompound = cItem.getClass().getMethod("u").invoke(cItem);
+            else if (ReflectionUtil.MINOR_VERSION >= 18)
                 //Save method in 1.18
-                tagCompound = cItem.getClass().getMethod("b", tagClass).invoke(cItem, tagClass.newInstance());
+                tagCompound = cItem.getClass().getMethod("t").invoke(cItem);
             else
-                tagCompound = cItem.getClass().getMethod("save", tagClass).invoke(cItem, tagClass.newInstance());
+                tagCompound = cItem.getClass().getMethod("getTag").invoke(cItem);
 
-            return new HoverEvent(
-                    Action.SHOW_ITEM,
-                    new ArrayList(Collections.singletonList(new Text(new BaseComponent[]{new TextComponent(tagCompound.toString())})))
-            );
-        } catch (IllegalAccessException | ClassNotFoundException | NoSuchMethodException | InvocationTargetException |
-                 InstantiationException e) {
+            String tagString = tagCompound != null ? tagCompound.toString() : "{}";
+
+            if (ReflectionUtil.MINOR_VERSION >= 18)
+                return new HoverEvent(
+                        Action.SHOW_ITEM,
+                        new Item(itemStack.getType().getKey().getKey(), itemStack.getAmount(), ItemTag.ofNbt(tagString))
+                );
+            else
+                return new HoverEvent(
+                        Action.SHOW_ITEM,
+                        new ArrayList(Collections.singletonList(new Text(new BaseComponent[]{new TextComponent(tagString)})))
+                );
+        } catch (IllegalAccessException | ClassNotFoundException | NoSuchMethodException |
+                 InvocationTargetException e) {
             e.printStackTrace();
         }
         return null;

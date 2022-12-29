@@ -21,7 +21,7 @@
         <rc.version>1.0-SNAPSHOT</rc.version>
         <we.version>5.5.8-SNAPSHOT<!--7.2.0-SNAPSHOT--></we.version>
         <wg.version><!--6.1.1-SNAPSHOT-->7.0.2-SNAPSHOT</wg.version>
-        <spigot.version>1.19.2-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.19.3-R0.1-SNAPSHOT</spigot.version>
         <bungee.version>1.19-R0.1-SNAPSHOT</bungee.version>
     </properties>
 
@@ -58,6 +58,12 @@
             <artifactId>worldedit</artifactId>
             <version>${we.version}</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bstats</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 <!--        <dependency>
             <groupId>com.sk89q.worldedit</groupId>
@@ -69,6 +75,12 @@
             <artifactId>worldguard-bukkit</artifactId>
             <version>${wg.version}</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bstats</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 <!--        <dependency>
             <groupId>com.sk89q.worldguard</groupId>
@@ -91,12 +103,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>3.0.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
